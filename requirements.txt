@@ -1,0 +1,5 @@
+# for people who want to use this code, this is what you need to install
+
+python-telegram-bot
+flask
+flask_github
