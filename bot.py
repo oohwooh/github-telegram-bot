@@ -4,6 +4,7 @@
 #some packages are built-in but for others you need to import // others req installing pip (pip install python-telegram-bot)
 from telegram.ext import Updater
 import os
+import github
 updater = Updater(token=os.getenv("BOT_TOKEN"), use_context=True) #use_context=True is special for v12 of library; default=False
 dispatcher = updater.dispatcher #introduce locally for updater quicker access to dispatcher
 
@@ -57,13 +58,4 @@ from telegram.ext import InlineQueryHandler
 inline_caps_handler = InlineQueryHandler(inline_caps)
 dispatcher.add_handler(inline_caps_handler)
 
-#use MessageHandler with command filter to reply to all unrecognized commands
-def unknown(update, context):git
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
-
-unknown_handler = MessageHandler(Filters.command, unknown)
-dispatcher.add_handler(unknown_handler)
-
-#added lastly: (if added it could be trigger before CommandHandlers has chance to update)
-#to circumvent this, keyword argument group (int) can be passed to add_handler with a value other than 0
-#updater.stop()
+updater.idle() #you could end through Ctrl+C
