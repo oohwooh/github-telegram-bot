@@ -1,0 +1,23 @@
+[33mcommit 30b3ab698b93582e017b6f354711e09419b5d9ad[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Elizabeth Qiu <elizabethjqiu@gmail.com>
+Date:   Tue Jul 7 18:29:12 2020 -0400
+
+    import os, add method call to updater, add basic greeting to make bot working, add BOT_TOKEN file to .gitignore
+
+[33mcommit b43c71684eff1073cffb2e91c8b880b630d748a3[m
+Author: Elizabeth Qiu <elizabethjqiu@gmail.com>
+Date:   Tue Jul 7 17:43:42 2020 -0400
+
+    create bot.py
+
+[33mcommit ba9faac291a656c566872695277fc68ac05a260c[m
+Author: Lola <lola@egherman.com>
+Date:   Mon Jul 6 18:16:16 2020 -0500
+
+    add helloworld.txt
+
+[33mcommit d02d8131c4d1f4485800f51c2ae55f523d327185[m
+Author: Lola <lola@egherman.com>
+Date:   Mon Jul 6 17:34:12 2020 -0500
+
+    Initial commit
