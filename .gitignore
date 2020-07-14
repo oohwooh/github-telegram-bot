@@ -130,3 +130,10 @@ dmypy.json
 
 # Secret variables
 launch.json
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/.gitignore
+/.idea/github-telegram-bot.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
