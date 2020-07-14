@@ -58,7 +58,7 @@ inline_caps_handler = InlineQueryHandler(inline_caps)
 dispatcher.add_handler(inline_caps_handler)
 
 #use MessageHandler with command filter to reply to all unrecognized commands
-def unknown(update, context):
+def unknown(update, context):git
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
 unknown_handler = MessageHandler(Filters.command, unknown)

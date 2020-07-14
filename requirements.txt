@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 # for people who want to use this code, this is what you need to install
 
 python-telegram-bot
 flask
+=======
+# for people who want to use this code, this is what you need to install
+
+python-telegram-bot
+flask
+>>>>>>> c0c47c86ac796eb3b66feb79f90edf8a4e4c5b56
 flask_github
