@@ -3,3 +3,4 @@
 python-telegram-bot
 flask
 flask_github
+PyGithub
