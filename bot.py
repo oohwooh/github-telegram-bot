@@ -4,12 +4,11 @@
 #some packages are built-in but for others you need to import // others req installing pip (pip install python-telegram-bot)
 from telegram.ext import Updater
 import os
-<<<<<<< HEAD
 import github
-=======
 from github_functions import repo_overview
->>>>>>> 5c6c108d023520eb4e8835ab77df2e2030363b8d
-updater = Updater(token=os.getenv("BOT_TOKEN"), use_context=True) #use_context=True is special for v12 of library; default=False
+from telegram.ext import PicklePersistence
+persistence = PicklePersistence(filename='data')
+updater = Updater(token=os.getenv("BOT_TOKEN"), persistence = persistence, use_context=True) #use_context=True is special for v12 of library; default=False
 dispatcher = updater.dispatcher #introduce locally for updater quicker access to dispatcher
 
 import logging #logging module setup to know when/why if things don't work
@@ -62,26 +61,40 @@ from telegram.ext import InlineQueryHandler
 inline_caps_handler = InlineQueryHandler(inline_caps)
 dispatcher.add_handler(inline_caps_handler)
 
-<<<<<<< HEAD
-updater.idle() #you could end through Ctrl+C
-=======
 from telegram import InlineKeyboardMarkup
 def repo_info(update, context):
-    desc, keyboard = repo_overview(context.args[0], "TOKEN_HERE (TODO: use the users saved token)")
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    context.bot.send_message(chat_id=update.effective_chat.id, text=desc, reply_markup=reply_markup)
+    if "token" in context.user_data:
+        desc, keyboard = repo_overview(context.args[0], context.user_data["token"])
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=desc, reply_markup=reply_markup)
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Not logged in. Please use the /auth command to log in.")
 
 repo_info_handler = CommandHandler("repo", repo_info)
 dispatcher.add_handler(repo_info_handler)
 #use MessageHandler with command filter to reply to all unrecognized commands
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+from github import Github
+def auth(update, context):
+    try:
+        g = Github(context.args[0])
+        user = g.get_user()
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Logged in as" + user.name + "(" + user.login + ")" )
+        context.user_data["token"] = context.args[0]
+
+    except:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid input. Enter token like '/auth token'")
+
+auth_handler = CommandHandler("auth", auth )
+dispatcher.add_handler(auth_handler)
 
 unknown_handler = MessageHandler(Filters.command, unknown)
 dispatcher.add_handler(unknown_handler)
+
+
 
 #added lastly: (if added it could be trigger before CommandHandlers has chance to update)
 #to circumvent this, keyword argument group (int) can be passed to add_handler with a value other than 0
 #updater.stop()
 updater.idle()
->>>>>>> 5c6c108d023520eb4e8835ab77df2e2030363b8d
