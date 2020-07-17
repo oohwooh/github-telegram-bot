@@ -11,13 +11,16 @@ dispatcher = updater.dispatcher #introduce locally for updater quicker access to
 import logging #logging module setup to know when/why if things don't work
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
+
 #/start command calls this: returns welcome message
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Hello and welcome. I'm a bot, please talk to me!")
 
+
 from telegram.ext import CommandHandler
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
+
 
 updater.start_polling()
 
@@ -25,9 +28,11 @@ updater.start_polling()
 def echo(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
 
+
 from telegram.ext import MessageHandler, Filters
 echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
 dispatcher.add_handler(echo_handler)
+
 
 #/caps command calls this; takes text and replies in caps
 #can receive the arguments (as a list, split on spaces) passed to command in callback function
@@ -37,6 +42,7 @@ def caps(update, context):
 
 caps_handler = CommandHandler('caps', caps)
 dispatcher.add_handler(caps_handler)
+
 
 #/setinline command calls this; bot call on command via inline mode
 from telegram import InlineQueryResultArticle, InputTextMessageContent
@@ -54,9 +60,11 @@ def inline_caps(update, context):
     )
     context.bot.answer_inline_query(update.inline_query.id, results)
 
+
 from telegram.ext import InlineQueryHandler
 inline_caps_handler = InlineQueryHandler(inline_caps)
 dispatcher.add_handler(inline_caps_handler)
+
 
 from telegram import InlineKeyboardMarkup
 def repo_info(update, context):
@@ -67,6 +75,8 @@ def repo_info(update, context):
 repo_info_handler = CommandHandler("repo", repo_info)
 dispatcher.add_handler(repo_info_handler)
 #use MessageHandler with command filter to reply to all unrecognized commands
+
+
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
