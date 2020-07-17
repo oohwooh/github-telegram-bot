@@ -5,4 +5,4 @@ def search_repos(GITHUB_TOKEN, query):
     repos = g.search_repositories(query=query, sort='updated', order='asc')
     print(repos)
 
-search_repos()
+#search_repos()
