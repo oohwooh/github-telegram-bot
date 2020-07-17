@@ -4,12 +4,8 @@
 #some packages are built-in but for others you need to import // others req installing pip (pip install python-telegram-bot)
 from telegram.ext import Updater
 import os
-<<<<<<< HEAD
-import github
-=======
-from github_functions import repo_overview
->>>>>>> 5c6c108d023520eb4e8835ab77df2e2030363b8d
-updater = Updater(token=os.getenv("BOT_TOKEN"), use_context=True) #use_context=True is special for v12 of library; default=False
+from github_functions import repo_overview, star_repo #use functions written from github_functions
+updater = Updater(BOT_TOKEN=os.getenv("BOT_TOKEN"), use_context=True) #use_context=True is special for v12 of library; default=False
 dispatcher = updater.dispatcher #introduce locally for updater quicker access to dispatcher
 
 import logging #logging module setup to know when/why if things don't work
@@ -62,9 +58,6 @@ from telegram.ext import InlineQueryHandler
 inline_caps_handler = InlineQueryHandler(inline_caps)
 dispatcher.add_handler(inline_caps_handler)
 
-<<<<<<< HEAD
-updater.idle() #you could end through Ctrl+C
-=======
 from telegram import InlineKeyboardMarkup
 def repo_info(update, context):
     desc, keyboard = repo_overview(context.args[0], "TOKEN_HERE (TODO: use the users saved token)")
@@ -84,4 +77,3 @@ dispatcher.add_handler(unknown_handler)
 #to circumvent this, keyword argument group (int) can be passed to add_handler with a value other than 0
 #updater.stop()
 updater.idle()
->>>>>>> 5c6c108d023520eb4e8835ab77df2e2030363b8d

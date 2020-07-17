@@ -7,7 +7,6 @@ app.config['GITHUB_CLIENT_SECRET'] = 'CLIENT_SECRET_HERE'
 
 github = GitHub(app)
 
-
 @app.route('/login')
 def login():
     return github.authorize()
