@@ -1,4 +1,5 @@
 from github import Github
+import os
 
 #take user token and name of repo
 
@@ -11,4 +12,3 @@ def star_repo(GITHUB_TOKEN, repo_name): #call: g.getrepo(repo_name)
         user.remove_from_starred(repo)
     else:
         user.add_to_starred(repo)
-
