@@ -7,4 +7,4 @@ def recent_commits(GITHUB_TOKEN, repo_name, n):
     for commit in repo.get_commits()[:n]: #view n most recent commits
         print (commit.author, commit.commit.message)
 
-recent_commits(os.getenv('GITHUB_TOKEN'), "oohwooh/github-telegram-bot") #need to interact with paginated list afterwards
+#recent_commits(os.getenv('GITHUB_TOKEN'), "oohwooh/github-telegram-bot") #need to interact with paginated list afterwards
