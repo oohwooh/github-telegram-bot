@@ -6,7 +6,7 @@ from telegram.ext import Updater
 import os
 import github
 from github_functions import repo_overview
-from telegram.ext import PicklePersistence
+from telegram.ext import PicklePersistence, CallbackQueryHandler #PicklePersistence: utility class, lets us save data about bot to a file
 persistence = PicklePersistence(filename='data')
 updater = Updater(token=os.getenv("BOT_TOKEN"), persistence = persistence, use_context=True) #use_context=True is special for v12 of library; default=False
 dispatcher = updater.dispatcher #introduce locally for updater quicker access to dispatcher
@@ -80,6 +80,15 @@ def repo_info(update, context):
 repo_info_handler = CommandHandler("repo", repo_info)
 dispatcher.add_handler(repo_info_handler)
 #use MessageHandler with command filter to reply to all unrecognized commands
+
+def button(update, context):
+    query = update.callback_query
+
+    # CallbackQueries need to be answered, even if no notification to the user is needed
+    # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
+    query.answer()
+
+    query.edit_message_text(text="Selected option: {}".format(query.data))
 
 
 def unknown(update, context):
