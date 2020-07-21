@@ -1,12 +1,14 @@
 #Elizabeth is trying to use the tutorial
 #run: $Env:BOT_TOKEN = 'TOKEN_HERE'; python bot.py
 
-#some packages are built-in but for others you need to import // others req installing pip (pip install python-telegram-bot)
-from telegram.ext import Updater
 import os
 import github
-from github_functions import repo_overview
+
+#some packages are built-in but for others you need to import // others req installing pip (pip install python-telegram-bot)
+from telegram.ext import Updater
 from telegram.ext import PicklePersistence, CallbackQueryHandler #PicklePersistence: utility class, lets us save data about bot to a file
+from github_functions import repo_overview, starrepo, watchrepo
+
 persistence = PicklePersistence(filename='data')
 updater = Updater(token=os.getenv("BOT_TOKEN"), persistence = persistence, use_context=True) #use_context=True is special for v12 of library; default=False
 dispatcher = updater.dispatcher #introduce locally for updater quicker access to dispatcher
@@ -23,8 +25,6 @@ def start(update, context):
 from telegram.ext import CommandHandler
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
-
-
 updater.start_polling()
 
 #listens for regular messages and echoes them; MessageHandler class and Handler subclass
@@ -67,8 +67,9 @@ def inline_caps(update, context):
 from telegram.ext import InlineQueryHandler
 inline_caps_handler = InlineQueryHandler(inline_caps)
 dispatcher.add_handler(inline_caps_handler)
-
 from telegram import InlineKeyboardMarkup
+
+
 def repo_info(update, context):
     if "token" in context.user_data:
         desc, keyboard = repo_overview(context.args[0], context.user_data["token"])
@@ -77,9 +78,11 @@ def repo_info(update, context):
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Not logged in. Please use the /auth command to log in.")
 
+
 repo_info_handler = CommandHandler("repo", repo_info)
 dispatcher.add_handler(repo_info_handler)
 #use MessageHandler with command filter to reply to all unrecognized commands
+
 
 def button(update, context):
     query = update.callback_query
@@ -88,28 +91,38 @@ def button(update, context):
     # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
     query.answer()
 
-    query.edit_message_text(text="Selected option: {}".format(query.data))
+    # 'watch_xxxxx (repo id)'
+
+    if query.data.startswith('star'):
+        # Auth token will be update.user_data['token']
+        star_repo
+    if query.data.startswith('star'):
+        # Auth token will be update.user_data['token']
+        watch_repo
+    query.edit_message_text(text="You selected {}".format(query.data))
 
 
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
+
 from github import Github
+
 def auth(update, context):
     try:
         g = Github(context.args[0])
         user = g.get_user()
         context.bot.send_message(chat_id=update.effective_chat.id, text="Logged in as" + user.name + "(" + user.login + ")" )
         context.user_data["token"] = context.args[0]
+        #/auth will get set to user.context_data['token']
 
     except:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid input. Enter token like '/auth token'")
 
+
 auth_handler = CommandHandler("auth", auth )
 dispatcher.add_handler(auth_handler)
-
 unknown_handler = MessageHandler(Filters.command, unknown)
 dispatcher.add_handler(unknown_handler)
-
 
 
 #added lastly: (if added it could be trigger before CommandHandlers has chance to update)
