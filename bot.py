@@ -81,25 +81,25 @@ def repo_info(update, context):
 
 repo_info_handler = CommandHandler("repo", repo_info)
 dispatcher.add_handler(repo_info_handler)
-#use MessageHandler with command filter to reply to all unrecognized commands
+# use MessageHandler with command filter to reply to all unrecognized commands
 
 
 def button(update, context):
     query = update.callback_query
-
     # CallbackQueries need to be answered, even if no notification to the user is needed
     # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
     query.answer()
-
     # 'watch_xxxxx (repo id)'
-
     if query.data.startswith('star'):
-        # Auth token will be update.user_data['token']
+        # User's auth token will be update.user_data['token']
         star_repo
-    if query.data.startswith('star'):
-        # Auth token will be update.user_data['token']
+    if query.data.startswith('watch'):
+        # User's auth token will be update.user_data['token']
         watch_repo
-    query.edit_message_text(text="You selected {}".format(query.data))
+    # another way to do this is f"Selected option: {query.data}"
+    query.edit_message_text(text="Selected option: {}".format(query.data))
+    # selected option: watch_277662457
+    updater.dispatcher.add_handler(CallbackQueryHandler(button))
 
 
 def unknown(update, context):

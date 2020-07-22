@@ -9,4 +9,4 @@ from .listrepos import list_repos
 from .recentcommits import recent_commits
 from .searchrepos import search_repos
 from .starrepo import star_repo
-from .watch import watch
+from .watch import watchrepo
