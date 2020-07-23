@@ -95,10 +95,12 @@ def button(update, context):
         repo_id = int(query.data.replace('star_', '')) # repo_id = 'xxxxxxx'
         # User's auth token will be update.user_data['token']
         star_repo(update.user_data['token'], repo_id)
+        
     if query.data.startswith('watch'):
         repo_id = int(query.data.replace('watch_', '')) # repo_id = 'xxxxxxx'
         # User's auth token will be update.user_data['token']
         watch_repo(update.user_data['token'], repo_id)
+    
     # another way to do this is f"Selected option: {query.data}"
     query.edit_message_text(text="Selected option: {}".format(query.data))
     # selected option: watch_277662457
@@ -133,3 +135,15 @@ dispatcher.add_handler(unknown_handler)
 #to circumvent this, keyword argument group (int) can be passed to add_handler with a value other than 0
 #updater.stop()
 updater.idle()
+
+
+# results = list()
+# for repo in search_repos(query):
+#     desc, keyboard = repo_overview()
+#     results.append(InlineQueryResultArticle) (
+#         id=repo.id,
+#         title=repo.name,
+#         input_message_content=desc
+#         reply_markup=keyboard
+#         url
+#     ))
