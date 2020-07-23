@@ -11,5 +11,3 @@ def search_repos(GITHUB_TOKEN, query):
     return(repos)
 
 #search_repos()
-
-
