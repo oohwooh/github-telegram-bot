@@ -6,8 +6,8 @@ import github
 
 #some packages are built-in but for others you need to import // others req installing pip (pip install python-telegram-bot)
 from telegram.ext import Updater
-from telegram.ext import PicklePersistence, CallbackQueryHandler #PicklePersistence: utility class, lets us save data about bot to a file
-from github_functions import repo_overview, starrepo, watchrepo
+from telegram.ext import PicklePersistence, CallbackQueryHandler # PicklePersistence: utility class, lets us save data about bot to a file
+from github_functions import repo_overview, star_repo, watch_repo # Need to import the function: in __init__.py, it imports the function from the file
 
 persistence = PicklePersistence(filename='data')
 updater = Updater(token=os.getenv("BOT_TOKEN"), persistence = persistence, use_context=True) #use_context=True is special for v12 of library; default=False
@@ -19,7 +19,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 #/start command calls this: returns welcome message
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello and welcome. I'm a bot, please talk to me!")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello. I'm a bot, please talk to me!")
 
 
 from telegram.ext import CommandHandler
@@ -73,8 +73,11 @@ from telegram import InlineKeyboardMarkup
 def repo_info(update, context):
     if "token" in context.user_data:
         desc, keyboard = repo_overview(context.args[0], context.user_data["token"])
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        context.bot.send_message(chat_id=update.effective_chat.id, text=desc, reply_markup=reply_markup)
+        if keyboard: # If keyboard exists
+            reply_markup = InlineKeyboardMarkup(keyboard)
+        else:
+            reply_markup = None
+            context.bot.send_message(chat_id=update.effective_chat.id, text=desc, reply_markup=reply_markup)
     else:
         context.bot.send_message(chat_id=update.effective_chat.id,
                                 text="Not logged in. Please use the /auth command to log in.")
@@ -89,22 +92,19 @@ def button(update, context):
     query = update.callback_query
     # CallbackQueries need to be answered, even if no notification to the user is needed
     # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
-    query.answer()
     # 'watch_xxxxx (repo id)'
     if query.data.startswith('star'):
         repo_id = int(query.data.replace('star_', '')) # repo_id = 'xxxxxxx'
         # User's auth token will be update.user_data['token']
-        star_repo(update.user_data['token'], repo_id)
-        
+        string, repo_name = star_repo(context.user_data['token'], repo_id)
     if query.data.startswith('watch'):
         repo_id = int(query.data.replace('watch_', '')) # repo_id = 'xxxxxxx'
         # User's auth token will be update.user_data['token']
-        watch_repo(update.user_data['token'], repo_id)
-    
+        string, repo_name = watch_repo(context.user_data['token'], repo_id)
+    query.answer(text="The repo, " + repo_name + " has been " + string)
     # another way to do this is f"Selected option: {query.data}"
-    query.edit_message_text(text="Selected option: {}".format(query.data))
+    # query.edit_message_text(text="Selected option: {}".format(query.data))
     # selected option: watch_277662457
-
 updater.dispatcher.add_handler(CallbackQueryHandler(button))
 
 
