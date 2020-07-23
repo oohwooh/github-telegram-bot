@@ -10,5 +10,7 @@ def watch_repo(GITHUB_TOKEN, repo_name): #call: g.getrepo(repo_name)
     #check if user starred repo already
     if user.has_in_watched(repo): #check if true
         user.remove_from_watched(repo)
+        return "unwatched", repo.full_name
     else:
         user.add_to_watched(repo)
+        return "watched", repo.full_name

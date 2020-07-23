@@ -10,7 +10,10 @@ def star_repo(GITHUB_TOKEN, repo_name):
     # check if user starred repo already
     if user.has_in_starred(repo): # check if true
         user.remove_from_starred(repo)
-        query.edit_message_caption(text="The repo, " + repo + "is now unstarred.")
+        return "unstarred", repo.full_name
     else:
         user.add_to_starred(repo)
-        query.edit_message_caption(text="The repo, " + repo + "is now starred.")
+        return "starred", repo.full_name
+        # both options below are valid
+        # return "starred " + repo # returns string and variable; takes extra processing to get repo name
+        # return "starred", repo # returns as tuple; easier to customize
