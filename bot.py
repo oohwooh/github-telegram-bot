@@ -76,7 +76,8 @@ def repo_info(update, context):
         reply_markup = InlineKeyboardMarkup(keyboard)
         context.bot.send_message(chat_id=update.effective_chat.id, text=desc, reply_markup=reply_markup)
     else:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Not logged in. Please use the /auth command to log in.")
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                text="Not logged in. Please use the /auth command to log in.")
 
 
 repo_info_handler = CommandHandler("repo", repo_info)
@@ -91,15 +92,18 @@ def button(update, context):
     query.answer()
     # 'watch_xxxxx (repo id)'
     if query.data.startswith('star'):
+        repo_id = int(query.data.replace('star_', '')) # repo_id = 'xxxxxxx'
         # User's auth token will be update.user_data['token']
-        star_repo
+        star_repo(update.user_data['token'], repo_id)
     if query.data.startswith('watch'):
+        repo_id = int(query.data.replace('watch_', '')) # repo_id = 'xxxxxxx'
         # User's auth token will be update.user_data['token']
-        watch_repo
+        watch_repo(update.user_data['token'], repo_id)
     # another way to do this is f"Selected option: {query.data}"
     query.edit_message_text(text="Selected option: {}".format(query.data))
     # selected option: watch_277662457
-    updater.dispatcher.add_handler(CallbackQueryHandler(button))
+
+updater.dispatcher.add_handler(CallbackQueryHandler(button))
 
 
 def unknown(update, context):
