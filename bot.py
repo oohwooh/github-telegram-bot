@@ -26,7 +26,7 @@ def ping(update, context):
 
 def help(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="""I will echo back all your statements while I'm running.
-Special commands include /start, /help, /ping, /auth, /repo""")
+Special commands include /start, /help, /caps [x], /ping, /auth [x], /repo [x]""")
 
 from telegram.ext import CommandHandler
 start_handler = CommandHandler('start', start)
