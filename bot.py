@@ -19,11 +19,19 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 #/start command calls this: returns welcome message
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello. I'm a bot, please talk to me!")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello. I'm a bot, please talk to me! Type /help for more info.")
 
+def ping(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="pong✌😝✌")
+
+def help(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="""I will echo back all your statements while I'm running.
+Special commands include /start, /help, /ping, /auth, /repo""")
 
 from telegram.ext import CommandHandler
 start_handler = CommandHandler('start', start)
+ping_handler = CommandHandler('ping', ping)
+help_handler = CommandHandler('help', help)
 dispatcher.add_handler(start_handler)
 updater.start_polling()
 
