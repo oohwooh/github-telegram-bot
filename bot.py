@@ -3,7 +3,7 @@
 
 import os
 import github
-
+from github_functions import search_repos
 #some packages are built-in but for others you need to import // others req installing pip (pip install python-telegram-bot)
 from telegram.ext import Updater
 from telegram.ext import PicklePersistence, CallbackQueryHandler # PicklePersistence: utility class, lets us save data about bot to a file
@@ -62,6 +62,17 @@ def inline_caps(update, context):
     if not query:
         return
     results = list()
+
+    results = [
+        InlineQueryResultArticle(
+            id = repo.id,
+            title = repo.full_name,
+            input_message_content = InputTextMessageContent(repo_overview(repo.full_name, '')[0]),
+           # reply_markup = repo_overview(repo.full_name, '')[1],
+            url = repo.html_url,
+            description = repo.description
+        ) for repo in search_repos('', 'codeday')[:20]
+    ]
     results.append(
         InlineQueryResultArticle(
             id=query.upper(),

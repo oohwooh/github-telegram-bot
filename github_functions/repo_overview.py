@@ -1,12 +1,16 @@
 from github import Github
 from telegram import InlineKeyboardButton
+from github import Repository
 
 def repo_overview(repo_name, GITHUB_TOKEN):
-    g = Github(GITHUB_TOKEN)
-    try:
-        repo = g.get_repo(repo_name)
-    except:
-        return "repo name does not exist", None # Null object in Python
+    if type(repo_name) == str:
+        g = Github(GITHUB_TOKEN)
+        try:
+            repo = g.get_repo(repo_name)
+        except:
+            return "repo name does not exist", None # Null object in Python
+    elif type(repo_name) == Repository:
+        repo = repo_name
     if (repo.description): # Python will convert this: it means "if this repo description exists (true)"
         desc = "Description: " + repo.description
     else:
