@@ -67,11 +67,11 @@ def inline_caps(update, context):
         InlineQueryResultArticle(
             id = repo.id,
             title = repo.full_name,
-            input_message_content = InputTextMessageContent(repo_overview(repo.full_name, '')[0]),
-           # reply_markup = repo_overview(repo.full_name, '')[1],
+            input_message_content = InputTextMessageContent(repo_overview(repo, context.user_data['token'])[0]),
+            reply_markup = InlineKeyboardMarkup(repo_overview(repo, context.user_data['token'])[1]),
             url = repo.html_url,
             description = repo.description
-        ) for repo in search_repos('', 'codeday')[:20]
+        ) for repo in search_repos(context.user_data['token'], query)[:20]
     ]
     results.append(
         InlineQueryResultArticle(

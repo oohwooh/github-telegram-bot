@@ -1,12 +1,12 @@
 from github import Github
 from telegram import InlineQuery
-from repo_overview import repo_overview
+from .repo_overview import repo_overview
 
 def search_repos(GITHUB_TOKEN, query):
     g = Github(GITHUB_TOKEN)
     if query == "":
         return("*add some default text here*")
-    repos = g.search_repositories(query, sort='updated', order='asc')
+    repos = g.search_repositories(query, order='asc')
     return(repos)
 
 
@@ -24,14 +24,3 @@ def inline_caps(update, context):
         )
     )
     context.bot.answer_inline_query(update.inline_query.id, results)
-
-print([
-    InlineQueryResultArticle(
-        id = repo.id,
-        title = repo.full_name,
-        input_message_content = repo_overview(repo.full_name, '')[0],
-        reply_markup = repo_overview(repo.full_name, '')[1],
-        url = repo.html_url,
-        description = repo.description
-) for repo in search_repos('', 'codeday')[:20]
-])
