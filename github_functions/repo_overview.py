@@ -15,7 +15,7 @@ def repo_overview(repo_name, GITHUB_TOKEN):
         desc = "Description: " + repo.description
     else:
         desc = ""
-    languages = "\n Languages: " + str(repo.get_languages())"
+    languages = "\n Languages: " + str(repo.get_languages())
     desc = desc + languages + "\n Watchers: " + str(repo.watchers_count) + " \n Stargazers: " + str(repo.stargazers_count) + " \n Forks: " + str(repo.forks_count)
     keyboard = [[InlineKeyboardButton("⭐", callback_data='star_'+str(repo.id)), InlineKeyboardButton("👀", callback_data='watch_'+str(repo.id))], [InlineKeyboardButton("Open in GitHub", url=repo.url)]]
     return desc, keyboard # desc in String, keyboard is nested list
